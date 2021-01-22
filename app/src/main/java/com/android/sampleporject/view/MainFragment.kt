@@ -6,36 +6,37 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.SearchView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import com.android.sampleporject.R
 import com.android.sampleporject.base.view.BaseFragment
+import com.android.sampleporject.databinding.MainFragmentBinding
 import com.android.sampleporject.viewmodel.MainViewModel
 
 
-class MainFragment : BaseFragment() {
+class MainFragment() : BaseFragment() {
 
     companion object {
         fun newInstance() = MainFragment()
     }
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var binding: MainFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        binding = MainFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
+        binding.content.layoutManager = GridLayoutManager(context, 2)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         viewModel.doSearch()
-        viewModel.searchLiveData.observe(viewLifecycleOwner, Observer {
-            Log.d("data", "Test links ${it?.link}")
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -64,6 +65,14 @@ class MainFragment : BaseFragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.subject.onComplete()
                 searchView.clearFocus()
+                viewModel.doSearch()
+                viewModel.searchLiveData.observe(viewLifecycleOwner, {
+                    Log.d("data", "Test links ${it?.link}")
+                    it.items?.let { response ->
+                        binding.content.adapter = ImageListAdapter(response)
+                    }
+                })
+
                 return true
             }
 
