@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">SamplePorject</string>
     <string name="search_title">Search for image</string>
+    <string name="no_title">No title</string>
+    <string name="search_hint">Search here</string>
+    <string name="please_click_on_search">Please click on Search icon to Search data</string>
+    <string name="author">Author: ^</string>
+
 </resources>

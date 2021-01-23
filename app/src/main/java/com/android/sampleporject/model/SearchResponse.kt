@@ -4,15 +4,15 @@ import com.google.gson.annotations.SerializedName
 
 data class SearchResponse(
     @SerializedName("title")
-    val title: String,
+    val title: String?,
     @SerializedName("link")
-    val link: String,
+    val link: String? = null,
     @SerializedName("description")
-    val description: String,
+    val description: String? = null,
     @SerializedName("modified")
-    val modified: String,
+    val modified: String? = null,
     @SerializedName("generator")
-    val generator: String,
+    val generator: String? = null,
     @SerializedName("items")
     val items: List<Item>? = null
 )

@@ -1,6 +1,8 @@
 package com.android.sampleporject.inject
 
 import com.android.sampleporject.apiservice.ApiService
+import com.android.sampleporject.base.viewmodel.BaseScheduler
+import com.android.sampleporject.base.viewmodel.Schedulers
 import com.android.sampleporject.utils.AppConstants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -14,6 +16,9 @@ import javax.inject.Singleton
 
 @Module(includes = [ViewModelBuilderModule::class])
 class NetworkModule {
+
+    @Provides
+    internal fun provideAndroidSchedulers(): Schedulers = BaseScheduler()
 
     /*
      * The method returns the Retrofit object
